@@ -6,9 +6,6 @@ This project is an extension and architectural improvement of my original projec
 [MeetRecall AI](https://github.com/rilufiyy/MeetRecall-AI), which I previously developed independently. For this technical test, the system was significantly expanded into a full Meeting Intelligence Platform, 
 adding a RAG-based chatbot, topic clustering, and per-speaker sentiment analysis.
 
-Built for the NoLimit Indonesia Data Scientist Technical Test 
-(Option C: RAG Chatbot + Bonus: Topic Clustering + Streamlit App).
-
 ---
 
 ## Table of Contents
