@@ -1,6 +1,4 @@
-# nolimit-ds-test-Sri-Lutfiya-Dwiyeni
-
-## MeetRecall AI Improvement
+# MeetRecall AI Improvement
 
 This project is an extension and architectural improvement of my original project, 
 [MeetRecall AI](https://github.com/rilufiyy/MeetRecall-AI), which I previously developed independently. For this technical test, the system was significantly expanded into a full Meeting Intelligence Platform, 
@@ -223,8 +221,8 @@ Speaker labels are produced **automatically** — no manual annotation required:
 ### 1. Clone & configure
 
 ```bash
-git clone https://github.com/<your-username>/nolimit-ds-test-<name>.git
-cd nolimit-ds-test-<name>
+git clone https://github.com/<your-username>/MeetRecall-AI-Improvement.git
+cd MeetRecall-AI-Improvement
 
 cp backend/.env.example backend/.env
 ```
