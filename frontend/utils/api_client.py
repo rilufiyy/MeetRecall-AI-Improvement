@@ -9,7 +9,7 @@ from typing import Optional
 
 import requests
 
-_BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+_BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
 
 
 class APIClient:
@@ -105,7 +105,7 @@ class APIClient:
             resp = self._session.post(
                 f"{self.base}/api/rag/chat/{meeting_id}",
                 json=payload,
-                timeout=120,
+                timeout=600,
             )
             resp.raise_for_status()
             return resp.json()
