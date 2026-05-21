@@ -15,7 +15,9 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --retries 10 --timeout 180 \
+        torch torchaudio --index-url https://download.pytorch.org/whl/cu128 && \
+    pip install --no-cache-dir --retries 10 --timeout 180 -r requirements.txt
 
 COPY . .
 RUN mkdir -p /app/data/meetings /app/data/faiss /app/uploads

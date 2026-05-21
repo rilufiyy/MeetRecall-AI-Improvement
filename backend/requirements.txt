@@ -4,8 +4,8 @@ python-multipart>=0.0.9
 aiofiles>=23.2.1
 pydantic>=2.0.0
 
-torch>=2.1.2 --index-url https://download.pytorch.org/whl/cu121
-torchaudio>=2.1.2 --index-url https://download.pytorch.org/whl/cu121
+torch>=2.7.0
+torchaudio>=2.7.0
 
 transformers>=4.40.0
 sentence-transformers>=2.7.0
@@ -20,7 +20,7 @@ faiss-cpu>=1.7.4
 
 scikit-learn>=1.4.0
 numpy>=1.26.0
-hdbscan>=0.8.33         
+hdbscan>=0.8.33
 
 assemblyai>=0.23.0
 
