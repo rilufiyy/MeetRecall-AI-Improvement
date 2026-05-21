@@ -29,6 +29,21 @@ WHISPER_MODEL_ID     = "openai/whisper-small"
 DIARIZATION_MODEL_ID = "pyannote/speaker-diarization-3.1"
 
 
+def _cuda_works() -> bool:
+    """Test if CUDA is actually executable, not just available."""
+    if not torch.cuda.is_available():
+        return False
+    try:
+        torch.zeros(1).cuda()
+        return True
+    except Exception as exc:
+        logger.warning(f"CUDA reported available but failed sanity check ({exc}). Falling back to CPU.")
+        return False
+
+_USE_CUDA = _cuda_works()
+logger.info(f"Device: {'GPU (CUDA)' if _USE_CUDA else 'CPU'}")
+
+
 # Utility 
 
 def _check_ffmpeg() -> None:
@@ -74,24 +89,24 @@ class LocalWhisperProvider:
     _pipeline = None
 
     def __init__(self) -> None:
-        self._device_int = 0 if torch.cuda.is_available() else -1
+        self._device_int = 0 if _USE_CUDA else -1
         self._initialize_pipeline()
 
     def _initialize_pipeline(self) -> None:
         if LocalWhisperProvider._pipeline is not None:
             return
-        logger.info(f"Loading Whisper model: {WHISPER_MODEL_ID}")
+        logger.info(f"Loading Whisper model: {WHISPER_MODEL_ID} on {'GPU' if _USE_CUDA else 'CPU'}")
         try:
             LocalWhisperProvider._pipeline = hf_pipeline(
                 "automatic-speech-recognition",
                 model=WHISPER_MODEL_ID,
                 chunk_length_s=30,
                 device=self._device_int,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                torch_dtype=torch.float16 if _USE_CUDA else torch.float32,
             )
             logger.info("Whisper loaded.")
         except Exception as exc:
-            logger.warning(f"Whisper load failed: {exc}. Clearing cache and retrying...")
+            logger.warning(f"Whisper load failed: {exc}. Clearing cache and retrying on CPU...")
             cache_dir = Path("/root/.cache/huggingface/hub/models--openai--whisper-small")
             if cache_dir.exists():
                 shutil.rmtree(cache_dir, ignore_errors=True)
@@ -99,10 +114,10 @@ class LocalWhisperProvider:
                 "automatic-speech-recognition",
                 model=WHISPER_MODEL_ID,
                 chunk_length_s=30,
-                device=self._device_int,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                device=-1,
+                torch_dtype=torch.float32,
             )
-            logger.info("Whisper loaded on retry.")
+            logger.info("Whisper loaded on CPU fallback.")
 
     def run(self, wav_path: Path) -> Tuple[str, list]:
         result = LocalWhisperProvider._pipeline(
@@ -122,7 +137,7 @@ class PyannoteDiarization:
 
     def __init__(self) -> None:
         self._hf_token: str = os.getenv("HUGGINGFACE_TOKEN", "")
-        self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self._device = torch.device("cuda" if _USE_CUDA else "cpu")
         self.enabled = bool(self._hf_token)
 
     def _initialize_pipeline(self) -> None:

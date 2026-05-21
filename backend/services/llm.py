@@ -18,6 +18,19 @@ import torch
 logger = logging.getLogger(__name__)
 
 LLM_MODEL_ID: str = os.getenv("RAG_LLM_MODEL", "Qwen/Qwen2-0.5B-Instruct")
+
+
+def _cuda_works() -> bool:
+    if not torch.cuda.is_available():
+        return False
+    try:
+        torch.zeros(1).cuda()
+        return True
+    except Exception as exc:
+        logger.warning(f"CUDA sanity check failed ({exc}). LLM will run on CPU.")
+        return False
+
+_USE_CUDA = _cuda_works()
 _MAX_INPUT_TOKENS: int = 1024
 
 # model_type values that indicate a decoder-only causal LM
@@ -50,7 +63,7 @@ class LLMService:
         model_type = config.model_type.lower()
         is_causal = model_type in _CAUSAL_FAMILIES
 
-        dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+        dtype = torch.float16 if _USE_CUDA else torch.float32
         LLMService._tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_ID)
 
         if is_causal:
@@ -62,7 +75,7 @@ class LLMService:
                 LLM_MODEL_ID, torch_dtype=dtype,
             )
 
-        if torch.cuda.is_available():
+        if _USE_CUDA:
             LLMService._model = LLMService._model.cuda()
         LLMService._model.eval()
         LLMService._is_causal = is_causal
@@ -95,7 +108,7 @@ class LLMService:
                 truncation=True,
                 max_length=_MAX_INPUT_TOKENS,
             )
-            if torch.cuda.is_available():
+            if _USE_CUDA:
                 inputs = {k: v.cuda() for k, v in inputs.items()}
 
             input_len = inputs["input_ids"].shape[1]
@@ -118,7 +131,7 @@ class LLMService:
                 truncation=True,
                 max_length=_MAX_INPUT_TOKENS,
             )
-            if torch.cuda.is_available():
+            if _USE_CUDA:
                 inputs = {k: v.cuda() for k, v in inputs.items()}
 
             with torch.no_grad():
