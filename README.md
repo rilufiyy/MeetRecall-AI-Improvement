@@ -1,11 +1,8 @@
 ## MeetRecall AI Improvement
 
 This project is an extension and architectural improvement of my original project, 
-[MeetRecall AI](https://github.com/rilufiyy/MeetRecall-AI), which I previously developed independently. For this technical test, the system was significantly expanded into a full Meeting Intelligence Platform, 
+[MeetRecall AI](https://github.com/rilufiyy/MeetRecall-AI), which I previously developed independently. The system was significantly expanded into a full Meeting Intelligence Platform, 
 adding a RAG-based chatbot, topic clustering, and per-speaker sentiment analysis.
-
-Built for the NoLimit Indonesia Data Scientist Technical Test 
-(Option C: RAG Chatbot + Bonus: Topic Clustering + Streamlit App).
 
 ---
 
@@ -35,7 +32,7 @@ Built for the NoLimit Indonesia Data Scientist Technical Test
 
 ## NLP Pipeline
 
-See **[Flowchart.pdf](Flowchart.pdf)** for the full visual diagram (mandatory for technical test).
+See **[Flowchart.pdf](Flowchart.pdf)** for the full visual diagram.
 
 ```
 Audio / Video Input  (MP4 · MKV · MP3 · WAV · M4A · WEBM · OGG · FLAC)
@@ -224,8 +221,8 @@ Speaker labels are produced **automatically** — no manual annotation required:
 ### 1. Clone & configure
 
 ```bash
-git clone https://github.com/<your-username>/nolimit-ds-test-<name>.git
-cd nolimit-ds-test-<name>
+git clone https://github.com/rilufiyy/MeetRecall-AI-Improvement.git
+cd MeetRecall-AI-Improvement
 
 cp backend/.env.example backend/.env
 ```
@@ -289,8 +286,8 @@ git --version
 ### Step 1 — Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/nolimit-ds-test-<name>.git
-cd nolimit-ds-test-<name>
+git clone https://github.com/rilufiyy/MeetRecall-AI-Improvement.git
+cd MeetRecall-AI-Improvement
 ```
 
 ---
@@ -420,7 +417,7 @@ docker compose down -v
 docker compose down -v --rmi all
 ```
 
-> ⚠️ `down -v` akan menghapus seluruh data meeting yang tersimpan dan cache model HuggingFace. Model harus diunduh ulang di run berikutnya.
+> `down -v` akan menghapus seluruh data meeting yang tersimpan dan cache model HuggingFace. Model harus diunduh ulang di run berikutnya.
 
 ---
 
