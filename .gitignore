@@ -1,0 +1,52 @@
+# Environment & Secrets
+env
+.env
+*.env
+.env.*
+backend/.env
+frontend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+.eggs/
+
+# Node.js (jika ada)
+node_modules/
+npm-debug.log*
+
+# Docker
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Database
+*.sqlite3
+*.db
+
+# Uploads & temp files
+uploads/
+tmp/
+temp/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
